@@ -25,7 +25,7 @@ class Koa {
 
 function composedMiddlewares(middlewares) {
     return function wrapMiddlewares(ctx) {
-        let indx = -1
+        let index = -1
         function dispatch(i) {
             index = i
             const fn = middlewares[i]
