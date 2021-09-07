@@ -18,9 +18,6 @@ let b = {
     flower: null, 
     receiveFlower: function (flower) {
         this.flower = flower
-        c.listenMood(function () {
-            c.receiveFlower(flower)
-        })
     },
     watchCMoodHandler: function (mood) {
         if (mood === 'happy') {
@@ -34,13 +31,38 @@ let c = {
     receiveFlower: function (flower) {
         console.log(`收到${flower.name}了，很开心`)
     },
-    sendMood: function () {
-        watchCMoodHandler(this.mood)
-    },
     changeMood: function (mood) {
         this.mood = mood
+        watchCMoodHandler(this.mood)
     }
 }
-a.sendFlower({ name: '玫瑰' })
+a.sendFlower(b)
 
 c.changeMood('happy') // 收到玫瑰了，很开心
+
+
+/**
+ * 缓存代理实现乘积计算
+ */
+
+ const multi = function() {
+    let a = 1
+    for (let i = 0, l; l = arguments[i++];) {
+      a = a * l
+    }
+    return a
+ }
+  
+const proxyMulti = (function () {
+    const cache = {}
+    return function () {
+        const tag = [].prototype.join.call(arguments, ',')
+        if (cache[tag]) {
+            return cache[tag]
+        }
+        cache[tag] = multi.apply(this, arguments)
+        return cache[tag]
+    }
+})()
+
+proxyMulti(1, 2, 3, 4)
