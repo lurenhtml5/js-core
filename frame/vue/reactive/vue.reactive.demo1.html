@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">初始值</div>
+    <input type="text">
+    <script>
+        const data = {
+            msg: 'message',
+            name: 'age'
+        }
+        let vm = new Proxy(data, {
+            get(target, key) {
+                return target[key]
+            },
+            set(target, key, newValue) {
+                if (target[key] === newValue) { return }
+                target[key] = newValue
+                document.querySelector('#app').textContent = target[key]
+            }
+        })
+        const input = document.querySelector('input')
+        input.addEventListener('input', function (e) {
+            vm.name = e.target.value
+        }, false)
+    </script>
+</body>
+</html>

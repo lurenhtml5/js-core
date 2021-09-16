@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">初始值</div>
+    <input type="text">
+    <script>
+        const data = {
+            msg: 'message',
+            name: 'age'
+        }
+        const vm = {}
+
+        function proxyData (data) {
+            Object.keys(data).forEach(key => {
+                Object.defineProperty(vm, key, {
+                    enumerable: true,
+                    configurable: true,
+                    get () {
+                        return data[key]
+                    },
+                    set (newVal) {
+                        if (newVal === data[key]) {
+                            return
+                        }
+                        data[key] = newVal
+                        document.querySelector('#app').textContent = data[key]
+                    }
+                })
+            })
+        }
+        proxyData(data)
+        const input = document.querySelector('input')
+        input.addEventListener('input', function (e) {
+            vm.name = e.target.value
+        }, false)
+    </script>
+</body>
+</html>
